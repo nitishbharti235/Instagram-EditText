@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="maxTextSize">80sp</dimen>
+    <dimen name="minTextSize">16sp</dimen>
+    <dimen name="autoresize_min_width">100dp</dimen>
+</resources>
