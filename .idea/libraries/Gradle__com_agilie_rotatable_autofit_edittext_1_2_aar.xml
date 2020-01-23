@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: com.agilie:rotatable-autofit-edittext:1.2@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/rotatable-autofit-edittext-1.2.aar/dfa47c192669f99a7bb2e25e678efcac/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/rotatable-autofit-edittext-1.2.aar/dfa47c192669f99a7bb2e25e678efcac/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.agilie/rotatable-autofit-edittext/1.2/99ea4769b007a73ed6bb8268dbcb0272831048c3/rotatable-autofit-edittext-1.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
