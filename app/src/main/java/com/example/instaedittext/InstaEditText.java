@@ -2,12 +2,9 @@ package com.example.instaedittext;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.widget.AppCompatEditText;
 import android.text.Editable;
 import android.text.Layout;
 import android.text.Spanned;
@@ -17,23 +14,17 @@ import android.text.style.AbsoluteSizeSpan;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class InstaEditText extends EditText {
 
-    private int mMaxTextSize = 200;
-    private int mMinTextSize = 16;
-    private int mWidthPx;
+    private int maxTextSize = 200;
+    private int minTextSize = 16;
+    private int widthPx;
 
-    private TextPaint mPaint;
-    private boolean mInitialized = false;
+    private TextPaint paint;
 
-    private boolean mResizing = false;
+    private Handler resizingHandler;
 
-    private Handler mResizingHandler;
-
-    private final Map<String, Integer> mCachedSizes = new HashMap<>();
 
     public InstaEditText(Context context) {
         this(context, null);
@@ -46,11 +37,11 @@ public class InstaEditText extends EditText {
     @SuppressLint("HandlerLeak")
     public InstaEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mMaxTextSize = context.getResources().getDimensionPixelSize(R.dimen.maxTextSize);
-        mMinTextSize = context.getResources().getDimensionPixelSize(R.dimen.minTextSize);
-        mWidthPx = context.getResources().getDimensionPixelSize(R.dimen.autoresize_min_width);
+        maxTextSize = context.getResources().getDimensionPixelSize(R.dimen.maxTextSize);
+        minTextSize = context.getResources().getDimensionPixelSize(R.dimen.minTextSize);
+        widthPx = context.getResources().getDimensionPixelSize(R.dimen.autoresize_min_width);
 
-        mResizingHandler = new Handler() {
+        resizingHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
                 adjustTextSize();
@@ -60,11 +51,11 @@ public class InstaEditText extends EditText {
 
     @Override
     public void setTypeface(final Typeface tf) {
-        if (mPaint == null) {
-            mPaint = new TextPaint(getPaint());
+        if (paint == null) {
+            paint = new TextPaint(getPaint());
         }
 
-        mPaint.setTypeface(tf);
+        paint.setTypeface(tf);
         super.setTypeface(tf);
     }
 
@@ -82,8 +73,8 @@ public class InstaEditText extends EditText {
         Editable text = getText();
         int selectionEnd = getSelectionEnd();
         String string = text.toString();
-        TextPaint textPaint = new TextPaint(mPaint);
-        textPaint.setTextSize(mMinTextSize);
+        TextPaint textPaint = new TextPaint(paint);
+        textPaint.setTextSize(minTextSize);
         Layout layout = new StaticLayout(
                 string,
                 textPaint,
@@ -98,7 +89,7 @@ public class InstaEditText extends EditText {
             int lineEnd = layout.getLineEnd(i);
             String substring = string.substring(lineStart, lineEnd);
 
-            int setTextSize = binarySearchSize(textPaint, i, substring, availableWidth, mMinTextSize, mMaxTextSize);
+            int setTextSize = binarySearchSize(textPaint, i, substring, availableWidth, minTextSize, maxTextSize);
             text.setSpan(
                     new AbsoluteSizeSpan(setTextSize),
                     lineStart,
@@ -123,32 +114,10 @@ public class InstaEditText extends EditText {
         return currentSize;
     }
 
-//    private Matrix matrix;
-//    public void setMatrix(float fl){
-//        matrix= new Matrix();
-//        matrix.postScale(fl,fl);
-//        invalidate();
-//    }
-//
-//    @Override
-//    protected void onDraw(Canvas canvas) {
-//        if (matrix != null){
-//            canvas.setMatrix(matrix);
-//        }
-//        super.onDraw(canvas);
-//    }
-
     private static boolean hasLineBreak(TextPaint textPaint, int linePosition, String text, int currentSize, int width) {
         textPaint.setTextSize(currentSize);
         float measureWidth = textPaint.measureText(text);
         return measureWidth > width;
     }
 
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        if (mResizingHandler != null) {
-            mResizingHandler.removeMessages(0);
-        }
-    }
 }
