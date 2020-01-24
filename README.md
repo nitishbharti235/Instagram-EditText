@@ -1,5 +1,5 @@
 # Instagram-EditText
-In this android project I have created an edittext which mimics the functionality of Instagram 'Create mode' status.
+In this android project I have created an edittext which mimics the functionality of Instagram 'Create mode' in status.
 This Edittext auto resizes the textsize for each line.
 
 To use this edittext:
